@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar ns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <element name="project">
+            <attribute name="xsi:schemaLocation"/>
+            <element name="modelVersion">
+                <data type="NMTOKEN"/>
+            </element>
+            <ref name="groupId"/>
+            <ref name="artifactId"/>
+            <ref name="version"/>
+            <ref name="name"/>
+            <element name="properties">
+                <element name="lenskit.version">
+                    <data type="decimal"/>
+                </element>
+            </element>
+            <element name="repositories">
+                <element name="repository">
+                    <ref name="id"/>
+                    <element name="url">
+                        <data type="anyURI"/>
+                    </element>
+                    <element name="releases">
+                        <ref name="enabled"/>
+                    </element>
+                    <element name="snapshots">
+                        <ref name="enabled"/>
+                    </element>
+                </element>
+            </element>
+            <element name="dependencies">
+                <oneOrMore>
+                    <element name="dependency">
+                        <ref name="groupId"/>
+                        <ref name="artifactId"/>
+                        <ref name="version"/>
+                    </element>
+                </oneOrMore>
+            </element>
+            <element name="build">
+                <element name="pluginManagement">
+                    <ref name="plugins"/>
+                </element>
+                <ref name="plugins"/>
+            </element>
+        </element>
+    </start>
+    <define name="groupId">
+        <element name="groupId">
+            <data type="NCName"/>
+        </element>
+    </define>
+    <define name="artifactId">
+        <element name="artifactId">
+            <data type="NCName"/>
+        </element>
+    </define>
+    <define name="version">
+        <element name="version">
+            <text/>
+        </element>
+    </define>
+    <define name="name">
+        <element name="name">
+            <text/>
+        </element>
+    </define>
+    <define name="id">
+        <element name="id">
+            <data type="NCName"/>
+        </element>
+    </define>
+    <define name="enabled">
+        <element name="enabled">
+            <data type="boolean"/>
+        </element>
+    </define>
+    <define name="plugins">
+        <element name="plugins">
+            <oneOrMore>
+                <element name="plugin">
+                    <ref name="groupId"/>
+                    <ref name="artifactId"/>
+                    <ref name="version"/>
+                    <choice>
+                        <ref name="configuration"/>
+                        <element name="executions">
+                            <element name="execution">
+                                <ref name="id"/>
+                                <element name="goals">
+                                    <element name="goal">
+                                        <data type="NCName"/>
+                                    </element>
+                                </element>
+                                <element name="phase">
+                                    <data type="NCName"/>
+                                </element>
+                                <ref name="configuration"/>
+                            </element>
+                        </element>
+                    </choice>
+                </element>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="configuration">
+        <element name="configuration">
+            <optional>
+                <element name="source">
+                    <data type="decimal"/>
+                </element>
+            </optional>
+            <choice>
+                <element name="target">
+                    <oneOrMore>
+                        <choice>
+                            <text/>
+                            <element name="zip">
+                                <attribute name="destfile"/>
+                                <element name="mappedresources">
+                                    <element name="fileset">
+                                        <attribute name="dir"/>
+                                        <oneOrMore>
+                                            <element name="include">
+                                                <attribute name="name"/>
+                                            </element>
+                                        </oneOrMore>
+                                    </element>
+                                    <element name="globmapper">
+                                        <attribute name="from"/>
+                                        <attribute name="to"/>
+                                    </element>
+                                </element>
+                            </element>
+                        </choice>
+                    </oneOrMore>
+                </element>
+                <group>
+                    <element name="repositoryLayout">
+                        <data type="NCName"/>
+                    </element>
+                    <element name="programs">
+                        <element name="program">
+                            <ref name="name"/>
+                            <element name="mainClass">
+                                <data type="NCName"/>
+                            </element>
+                        </element>
+                    </element>
+                    <element name="assembleDirectory">
+                        <text/>
+                    </element>
+                </group>
+            </choice>
+        </element>
+    </define>
+</grammar>
